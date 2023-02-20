@@ -16,9 +16,25 @@ void MyMesh::GenerateCircle(float a_fRadius, int a_nSubdivisions, vector3 a_v3Co
 		Calculate a_nSubdivisions number of points around a center point in a radial manner
 		then call the AddTri function to generate a_nSubdivision number of faces
 	*/
-	AddTri(	vector3(0.0f, 0.0f, 0.0f),
-			vector3(1.0f, 0.0f, 0.0f),
-			vector3(0.77f, 0.77f, 0.0f));
+	//AddTri(	vector3(0.0f, 0.0f, 0.0f),
+	//		vector3(1.0f, 0.0f, 0.0f),
+	//		vector3(0.77f, 0.77f, 0.0f));
+
+	//variables to hold the angles 
+	float angle = 0.0f;
+	float angleChange = glm::radians( 360.0f / a_nSubdivisions);
+
+	//creates a for loop that runs for the number of subdivisions given
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		//Creates the triangles
+		AddTri(vector3(0.0f, 0.0f, 0.0f),  //will always start at 0,0,0
+			vector3(a_fRadius * cos(angle), a_fRadius * sin(angle), 0.0f), //creates the next vertext according the the current angle
+			vector3(a_fRadius * cos(angle + angleChange), a_fRadius *  sin(angle + angleChange), 0.0f)); //creates the next vertex while keeping in consideration how the angle must change
+
+		//adds the angle change to the current angle to ensure we dont draw the triangles ontop of each other
+		angle += angleChange;
+	}
 
 	// Adding information about color
 	CompleteMesh(a_v3Color);
